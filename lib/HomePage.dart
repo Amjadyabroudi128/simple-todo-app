@@ -1,3 +1,5 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +71,10 @@ class _HomePageState extends State<HomePage> {
                       if (action == 'create') {
                         // add a new project to Firestore
                       await  FirebaseFirestore.instance.collection('project').add(
-                            {"name": name, "hours" : hours});
+                            {
+                              "name": name,
+                              "hours" : hours
+                            });
                       }
 
                       if (action == 'update') {
@@ -79,8 +84,7 @@ class _HomePageState extends State<HomePage> {
                       }
 
                       // Clear the text fields
-                      _nameController.clear();
-                      _hoursController.clear();
+                      clearText();
 
                       ScaffoldMessenger.of(context).showSnackBar( SnackBar(
                         content: Text(action == 'create' ? 'You have successfully created a project':'You have successfully edited a project' ),
@@ -99,14 +103,55 @@ class _HomePageState extends State<HomePage> {
 
   }
 
+  void clearText() {
+    _nameController.clear();
+    _hoursController.clear();
+
+  }
+  Future<void> _showMyDialog(Id) async {
+
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('delete file '),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('you sure you want to delete ')
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('yes'),
+              onPressed: () async {
+                await FirebaseFirestore.instance.collection('project').doc(Id).delete();
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text('You have successfully deleted a project'),
+
+                ));
+                Navigator.pop(context);
+              },
+
+            ),
+            TextButton(
+              child: const Text('cancel'),
+              onPressed: ()  {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   // Deleteing a project by id
   Future<void> _deleteProduct(Id) async {
-    await FirebaseFirestore.instance.collection('project').doc(Id).delete();
-    // Show a snackbar
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text('You have successfully deleted a project'),
+    // await FirebaseFirestore.instance.collection('project').doc(Id).delete();
+    await _showMyDialog(Id);
 
-    ));
   }
 
   @override
