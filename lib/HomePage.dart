@@ -115,17 +115,28 @@ class _HomePageState extends State<HomePage> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('delete file '),
+          title:  Text('you are about to delete a project ?',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('you sure you want to delete ')
+                Text('are you sure? ',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 20.0,
+                  ),),
+
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('yes'),
+              child: const Text('yes',
+                style: TextStyle(fontSize: 20),
+              ),
               onPressed: () async {
                 await FirebaseFirestore.instance.collection('project').doc(Id).delete();
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -137,7 +148,9 @@ class _HomePageState extends State<HomePage> {
 
             ),
             TextButton(
-              child: const Text('cancel'),
+              child: const Text('cancel',
+                style: TextStyle(fontSize: 20),
+              ),
               onPressed: ()  {
                 Navigator.pop(context);
               },
@@ -147,6 +160,7 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+
   // Deleteing a project by id
   Future<void> _deleteProduct(Id) async {
     // await FirebaseFirestore.instance.collection('project').doc(Id).delete();
@@ -171,25 +185,38 @@ class _HomePageState extends State<HomePage> {
                 final DocumentSnapshot documentSnapshot =
                 streamSnapshot.data!.docs[index];
                 return Card(
-                  margin: const EdgeInsets.all(10),
+                  color: Colors.blue.shade100,
+                  shadowColor: Colors.lightBlueAccent,
+                  elevation: 10,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  margin: const EdgeInsets.all(19),
                   child: ListTile(
-                    title: Text(documentSnapshot['name']),
-                    subtitle: Text(documentSnapshot['hours'].toString()),
+                    title: Text(documentSnapshot['name'],
+
+                    ),
+                    subtitle: Text(documentSnapshot['hours'].toString(),
+
+                    ),
                     trailing: SizedBox(
                       width: 100,
-                      child: Row(
-                        children: [
-                          // Press this button to edit a single product
-                          IconButton(
-                              icon: const Icon(Icons.edit),
-                              onPressed: () =>
-                                  _createOrUpdate(documentSnapshot)),
-                          // This icon button is used to delete a single product
-                          IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () =>
-                                  _deleteProduct(documentSnapshot.id)),
-                        ],
+                      child: Expanded(
+                        child: Row(
+                          children: [
+                            // Press this button to edit a single product
+                            IconButton(
+                                icon:  Icon(Icons.mode_edit_sharp),
+                                onPressed: () =>
+                                    _createOrUpdate(documentSnapshot)),
+                            // This icon button is used to delete a single product
+                            IconButton(
+                                icon:  Icon(Icons.delete_forever_rounded),
+                                onPressed: () =>
+                                    _deleteProduct(documentSnapshot.id)),
+
+                          ],
+                        ),
                       ),
                     ),
                   ),
