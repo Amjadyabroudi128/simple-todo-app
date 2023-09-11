@@ -185,7 +185,7 @@ class _HomePageState extends State<HomePage> {
                 final DocumentSnapshot documentSnapshot =
                 streamSnapshot.data!.docs[index];
                 return Card(
-                  color: Colors.blue.shade100,
+                  color: Colors.lightBlue,
                   shadowColor: Colors.lightBlueAccent,
                   elevation: 10,
                   shape: RoundedRectangleBorder(
@@ -197,7 +197,9 @@ class _HomePageState extends State<HomePage> {
 
                     ),
                     subtitle: Text(documentSnapshot['hours'].toString(),
-
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                     trailing: SizedBox(
                       width: 100,
@@ -235,6 +237,7 @@ class _HomePageState extends State<HomePage> {
         onPressed: () => _createOrUpdate(),
         child: const Icon(Icons.add),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
