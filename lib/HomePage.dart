@@ -32,6 +32,11 @@ class _HomePageState extends State<HomePage> {
       _hoursController.text = documentSnapshot['hours'].toString();
     }
     await  showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(25.0),
+          )
+        ),
         isScrollControlled: true,
         context: context,
         builder: (BuildContext ctx) {
@@ -48,14 +53,23 @@ class _HomePageState extends State<HomePage> {
               children: [
                 TextField(
                   controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Name of project'),
+                  decoration:  InputDecoration(labelText: 'Name of project',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    hintText: 'e.g: do my github profile'
+                  ),
                 ),
+                SizedBox(height: 10),
                 TextField(
                   keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
                   controller: _hoursController,
-                  decoration: const InputDecoration(
+                  decoration:  InputDecoration(
                     labelText: 'hours it takes ',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -99,6 +113,7 @@ class _HomePageState extends State<HomePage> {
           );
 
         }
+
         );
 
   }
